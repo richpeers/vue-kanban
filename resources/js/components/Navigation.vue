@@ -15,9 +15,7 @@
                 </ul>
 
                 <!-- Right Side Of Navbar -->
-                <ul class="navbar-nav ml-auto">
-                    <!-- Authentication Links -->
-
+                <ul v-if="!user.authenticated" class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <router-link :to="{ name: 'login' }">Login</router-link>
                     </li>
@@ -25,10 +23,13 @@
                     <li class="nav-item">
                         <router-link :to="{ name: 'register' }">Register</router-link>
                     </li>
+                </ul>
+
+                <ul v-if="user.authenticated" class="navbar-nav ml-auto">
 
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Name <span class="caret"></span>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ user.data.name }} <span class="caret"></span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -43,3 +44,15 @@
         </div>
     </nav>
 </template>
+
+<script>
+    import {mapGetters} from 'vuex'
+
+    export default {
+        computed: {
+            ...mapGetters({
+                user: 'auth/user'
+            })
+        }
+    }
+</script>
