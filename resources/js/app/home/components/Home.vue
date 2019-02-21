@@ -1,9 +1,3 @@
 <template>
-    <p>Home</p>
+    <p class="mt-5">Home</p>
 </template>
-
-<script>
-    export default {
-        name: "Home"
-    }
-</script>

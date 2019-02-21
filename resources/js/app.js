@@ -1,5 +1,11 @@
 import router from './router';
 import store from './vuex';
+import localforage from 'localforage';
+
+localforage.config({
+    driver: localforage.LOCALSTORAGE,
+    storeName: 'singlePageApp'
+});
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -31,8 +37,17 @@ Vue.component('navigation', require('./components/Navigation.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+store.dispatch('auth/setToken').then(() => {
+    store.dispatch('auth/fetchUser').catch(() => {
+        store.dispatch('auth/clearAuth');
+        router.replace({name: 'login'})
+    })
+}).catch(() => {
+    store.dispatch('auth/clearAuth')
+});
+
 const app = new Vue({
     router: router,
     store: store,
-    el: '#app',
+    el: '#app'
 });

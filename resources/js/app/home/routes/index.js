@@ -1,4 +1,4 @@
-import {Home} from '../components';
+import { Home } from '../components'
 
 export default [
     {

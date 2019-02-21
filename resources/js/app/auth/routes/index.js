@@ -1,8 +1,8 @@
-import {Login, Register} from '../components';
+import { Login, Register } from '../components'
 
 export default [
     {
-        path: '/home',
+        path: '/login',
         component: Login,
         name: 'login',
         meta: {

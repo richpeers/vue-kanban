@@ -17,28 +17,32 @@
                 <!-- Right Side Of Navbar -->
                 <ul v-if="!user.authenticated" class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <router-link :to="{ name: 'login' }">Login</router-link>
+                        <router-link :to="{ name: 'login' }" class="nav-link">Login</router-link>
                     </li>
 
                     <li class="nav-item">
-                        <router-link :to="{ name: 'register' }">Register</router-link>
+                        <router-link :to="{ name: 'register' }" class="nav-link">Register</router-link>
                     </li>
                 </ul>
 
-                <ul v-if="user.authenticated" class="navbar-nav ml-auto">
-
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ user.data.name }} <span class="caret"></span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">
-                                Logout
-                            </a>
-                        </div>
+                <ul v-if="user.authenticated" class="navbar-nav">
+                    <li>
+                        <router-link :to="{ name: 'posts' }" class="nav-link">Posts</router-link>
                     </li>
 
+                    <li>
+                        <a href="#" @click.prevent="signout" class="nav-link">Logout</a>
+                    </li>
+                    <!--<li class="nav-item dropdown">-->
+                        <!--<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                            <!--{{ user.data.name }} <span class="caret"></span>-->
+                        <!--</a>-->
+
+                        <!--<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">-->
+
+                            <!--<a href="#" @click.prevent="signout" class="dropdown-item">Logout</a>-->
+                        <!--</div>-->
+                    <!--</li>-->
                 </ul>
             </div>
         </div>
@@ -46,13 +50,21 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex'
+    import {mapGetters, mapActions} from 'vuex'
 
     export default {
-        computed: {
-            ...mapGetters({
-                user: 'auth/user'
-            })
+        computed: mapGetters({
+            user: 'auth/user'
+        }),
+        methods: {
+            ...mapActions({
+                logout: 'auth/logout'
+            }),
+            signout() {
+                this.logout().then(() => {
+                    this.$router.replace({name: 'home'})
+                })
+            }
         }
     }
 </script>

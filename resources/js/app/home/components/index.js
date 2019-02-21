@@ -1,3 +1,3 @@
-import Vue from 'vue';
+import Vue from 'vue'
 
-export const Home = Vue.component('home', require('./Home').default);
+export const Home = Vue.component('home', require('./Home.vue').default);
