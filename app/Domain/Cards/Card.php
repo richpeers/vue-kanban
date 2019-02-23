@@ -2,6 +2,7 @@
 
 namespace App\Domain\Cards;
 
+use App\App\Traits\ModelHasHashIds;
 use App\Domain\Boards\Board;
 use App\Domain\Comments\Comment;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Card extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, ModelHasHashIds;
 
     protected $table = 'cards';
 

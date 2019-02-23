@@ -6,6 +6,7 @@ use App\App\Repositories\Exceptions\NoEntityDefined;
 use App\App\Repositories\RepositoryInterface;
 use App\Repositories\CriteriaInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Vinkla\Hashids\Facades\Hashids;
 
 abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterface
 {
@@ -46,6 +47,15 @@ abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterf
         }
 
         return $model;
+    }
+
+    /**
+     * @param $hashId
+     * @return mixed
+     */
+    public function findByHashId($hashId)
+    {
+        return $this->find(Hashids::decode($hashId));
     }
 
     /**

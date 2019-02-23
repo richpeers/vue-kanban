@@ -8,6 +8,8 @@ interface RepositoryInterface
 
     public function find($id);
 
+    public function findByHashId($hashId);
+
     public function findWhere($column, $value);
 
     public function findWhereFirst($column, $value);

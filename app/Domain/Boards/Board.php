@@ -2,13 +2,14 @@
 
 namespace App\Domain\Boards;
 
+use App\App\Traits\ModelHasHashIds;
 use App\Domain\Columns\Column;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Board extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, ModelHasHashIds;
 
     protected $table = 'boards';
 

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Teams;
 
+use App\App\Traits\ModelHasHashIds;
 use App\Domain\Boards\Board;
 use App\Domain\Users\User;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Team extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, ModelHasHashIds;
 
     protected $table = 'teams';
 
@@ -39,5 +40,4 @@ class Team extends Model
     {
         return $this->morphMany(Board::class, 'owner');
     }
-
 }
