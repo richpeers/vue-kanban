@@ -2,6 +2,8 @@
 
 namespace App\Domain\Users;
 
+use App\Domain\Boards\Board;
+use App\Domain\Teams\Team;
 use App\Domain\Users\Traits\JwtTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -11,6 +13,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable, JwtTrait;
+
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -29,4 +33,24 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Get the user's teams
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class);
+    }
+
+    /**
+     * Get the boards owned by the user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function boards()
+    {
+        return $this->morphMany(Board::class, 'owner');
+    }
 }
