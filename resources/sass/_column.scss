@@ -1,0 +1,50 @@
+.column-wrapper {
+  display: inline-block;
+  width: 20em;
+  height: 100%;
+  overflow-y: auto;
+  margin: 0 1em 0 1em;
+
+  .column {
+    background-color: $gray-300;
+    padding: 1em;
+
+    &.create-column {
+      padding: 0;
+    }
+
+    .column-title {
+      position: relative;
+
+      i {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: $gray-500;
+        &:hover {
+          cursor: pointer;
+          color: $danger;
+        }
+      }
+    }
+
+    .can-card {
+      background-color: white;
+      padding: 1em;
+      margin: 1em 0 0 0;
+
+      &.create-card {
+        padding: 0;
+
+        textarea {
+          resize: none
+        }
+      }
+
+      .can-card-title {
+        white-space: normal;
+        text-align: left;
+      }
+    }
+  }
+}

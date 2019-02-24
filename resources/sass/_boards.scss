@@ -1,0 +1,27 @@
+.boards {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -2em;
+
+  .card {
+    width: 13.7em;
+    height: 6em;
+    margin: 0 2em 2em 0;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .card-body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      span {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+    }
+  }
+}

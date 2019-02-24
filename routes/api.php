@@ -12,4 +12,29 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 // Auth Protected routes
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('/posts', 'Posts\PostsController');
+
+    // Boards
+    Route::resource('/boards', 'Boards\BoardController')->only([
+        'index', 'store', 'show', 'update', 'destroy'
+    ]);
+
+    // Cards
+    Route::resource('/cards', 'Cards\CardController')->only([
+        'store', 'show', 'update', 'destroy'
+    ]);
+
+    // Columns
+    Route::resource('/columns', 'Columns\ColumnController')->only([
+        'store', 'show', 'update', 'destroy'
+    ]);
+
+    // Comments
+    Route::resource('/comments', 'Comments\CommentController')->only([
+        'store', 'show', 'update', 'destroy'
+    ]);
+
+    // Teams
+    Route::resource('/teams', 'Teams\TeamController')->only([
+        'index', 'store', 'show', 'update', 'destroy'
+    ]);
 });

@@ -1,5 +1,8 @@
 <template>
-    <p class="mt-5">Dashboard</p>
+    <div class="dashboard container">
+        <p class="mt-5">Personal Boards</p>
+        <boards></boards>
+    </div>
 </template>
 
 <script>

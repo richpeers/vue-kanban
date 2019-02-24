@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Columns;
 
 use App\Domain\Columns\Repositories\ColumnRepository;
 use App\Http\Requests\Columns\CreateColumnFormRequest;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 
 class ColumnController extends Controller
 {
@@ -29,9 +28,9 @@ class ColumnController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CreateColumnFormRequest $request
-     * @return Response
+     * @return JsonResponse
      */
-    public function store(CreateColumnFormRequest $request): Response
+    public function store(CreateColumnFormRequest $request): JsonResponse
     {
         $column = $this->columns->create([
             'order' => $request->input('order'),
@@ -48,9 +47,9 @@ class ColumnController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function show($id): Response
+    public function show($id): JsonResponse
     {
         return response()->json([
             'data' => $this->columns->find($id)
@@ -62,9 +61,9 @@ class ColumnController extends Controller
      *
      * @param  CreateColumnFormRequest $request
      * @param  int $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function update(CreateColumnFormRequest $request, $id): Response
+    public function update(CreateColumnFormRequest $request, $id): JsonResponse
     {
         $team = $this->columns->update($id, [
             'order' => $request->input('order'),
@@ -81,9 +80,9 @@ class ColumnController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function destroy($id): Response
+    public function destroy($id): JsonResponse
     {
         return response()->json([
             'data' => $this->columns->delete($id)

@@ -26,7 +26,7 @@ class CreateColumnFormRequest extends FormRequest
         return [
             'order' => 'required|integer',
             'title' => 'required|string',
-            'board_id' => 'required|integer|exists,boards,id',
+            'board_id' => 'required|integer|exists:boards,id',
         ];
     }
 }

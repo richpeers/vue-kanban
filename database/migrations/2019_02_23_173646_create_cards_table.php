@@ -20,8 +20,8 @@ class CreateCardsTable extends Migration
             $table->unsignedInteger('order');
             $table->index(['column_id', 'order']);
             $table->text('title');
-            $table->text('description');
-            $table->dateTime('due');
+            $table->text('description')->nullable();
+            $table->dateTime('due')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Comments;
 use App\Domain\Comments\Repositories\CommentRepository;
 use App\Http\Requests\Cards\CreateCardFormRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
 {
@@ -28,9 +28,9 @@ class CommentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  CreateCardFormRequest $request
-     * @return Response
+     * @return JsonResponse
      */
-    public function store(CreateCardFormRequest $request): Response
+    public function store(CreateCardFormRequest $request): JsonResponse
     {
         $comment = $this->comments->create([
             'card_id' => $request->input('card_id'),
@@ -46,9 +46,9 @@ class CommentController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function show($id): Response
+    public function show($id): JsonResponse
     {
         return response()->json([
             'data' => $this->comments->findByHashId($id)
@@ -60,9 +60,9 @@ class CommentController extends Controller
      *
      * @param  CreateCardFormRequest $request
      * @param  int $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function update(CreateCardFormRequest $request, $id): Response
+    public function update(CreateCardFormRequest $request, $id): JsonResponse
     {
         $comment = $this->comments->update($id, [
             'card_id' => $request->input('card_id'),
@@ -78,9 +78,9 @@ class CommentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function destroy($id): Response
+    public function destroy($id): JsonResponse
     {
         return response()->json([
             'data' => $this->comments->delete($id)

@@ -21,15 +21,6 @@ class Board extends Model
     protected $fillable = ['title', 'owner_type', 'owner_id', 'private'];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'private' => 'boolean',
-    ];
-
-    /**
      * The accessors to append to the model's array form.
      *
      * @var array

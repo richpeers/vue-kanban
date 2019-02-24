@@ -1,3 +1,1 @@
-export default {
-    userBoards: []
-}
+export default {}

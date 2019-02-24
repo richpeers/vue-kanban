@@ -38,7 +38,7 @@ abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterf
      */
     public function find($id)
     {
-        $model = $this->entity->find($id);
+        $model = $this->entity->find($id)->first();
 
         if (!$model) {
             throw (new ModelNotFoundException)->setModel(

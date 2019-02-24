@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Teams;
 use App\Domain\Teams\Repositories\TeamRepository;
 use App\Domain\Users\Repositories\UserRepository;
 use App\Http\Requests\Teams\CreateTeamFormRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -31,9 +32,9 @@ class TeamController extends Controller
      *
      * @param Request $request
      * @param UserRepository $users
-     * @return Response
+     * @return JsonResponse
      */
-    public function index(Request $request, UserRepository $users): Response
+    public function index(Request $request, UserRepository $users): JsonResponse
     {
         return response()->json([
             'data' => $users->userTeamsWithBoards($request)
@@ -44,9 +45,9 @@ class TeamController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  CreateTeamFormRequest $request
-     * @return Response
+     * @return JsonResponse
      */
-    public function store(CreateTeamFormRequest $request): Response
+    public function store(CreateTeamFormRequest $request): JsonResponse
     {
         $team = $this->teams->create([
             'title' => $request->input('title'),
@@ -65,9 +66,9 @@ class TeamController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function show($id): Response
+    public function show($id): JsonResponse
     {
         return response()->json([
             'data' => $this->teams->findByHashId($id)
@@ -79,9 +80,9 @@ class TeamController extends Controller
      *
      * @param  CreateTeamFormRequest $request
      * @param  int $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function update(CreateTeamFormRequest $request, $id): Response
+    public function update(CreateTeamFormRequest $request, $id): JsonResponse
     {
         $team = $this->teams->update($id, [
             'title' => $request->input('title'),
@@ -98,9 +99,9 @@ class TeamController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function destroy($id): Response
+    public function destroy($id): JsonResponse
     {
         return response()->json([
             'data' => $this->teams->delete($id)

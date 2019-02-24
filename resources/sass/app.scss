@@ -1,16 +1,55 @@
-
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Variables
 @import 'variables';
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
+@import 'modals';
 @import "utitities";
+@import "boards";
+@import "board";
+@import "columns";
+@import "column";
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+body, html, #app, .app, .page {
+  height: 100%;
+}
+
+.app {
+  padding-top: $nav-link-height + $nav-link-padding-y * 2;
+}
+
+.nmc-circle {
+  display: inline-block;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background: white;
+  line-height: 22px;
+  text-align: center;
+}
+
+.banner {
+  padding-top: $nav-link-height + $nav-link-padding-y * 2;
+  position: relative;
+
+  .banner-progress {
+    background-image: url('/img/progress.png');
+    height: 750px;
+    background-size: contain; /* <------ */
+    background-repeat: no-repeat;
+    background-position: center center;
+    opacity: 0.6;
+  }
+  .home-register {
+    position: absolute;
+    top: 80%;
+    height: 12em;
+    width: 100%;
+    text-align: center;
+    button {
+      width: 10em;
+    }
+  }
+
 }

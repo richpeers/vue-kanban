@@ -27,7 +27,7 @@ class CreateCardFormRequest extends FormRequest
             'column_id' => 'required|integer|exists:columns,id',
             'order' => 'required|integer',
             'title' => 'required|string',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'due' => 'nullable|date_format:"Y-m-d H:i"',
         ];
     }

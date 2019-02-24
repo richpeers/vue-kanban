@@ -11,4 +11,6 @@ interface BoardRepository
     public function createPersonalBoard(Request $request);
 
     public function createTeamBoard(Request $request);
+
+    public function editBoard($hashId);
 }

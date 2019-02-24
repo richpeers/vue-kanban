@@ -1,9 +1,10 @@
 <template>
-    <div>
+    <div class="app">
         <navigation></navigation>
-        
-        <div class="container">
+
+        <div class="page">
             <router-view></router-view>
         </div>
+
     </div>
 </template>
