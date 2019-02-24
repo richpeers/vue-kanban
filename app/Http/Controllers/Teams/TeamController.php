@@ -2,84 +2,108 @@
 
 namespace App\Http\Controllers\Teams;
 
+use App\Domain\Teams\Repositories\TeamRepository;
+use App\Domain\Users\Repositories\UserRepository;
+use App\Http\Requests\Teams\CreateTeamFormRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class TeamController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @var TeamRepository
      */
-    public function index()
+    protected $teams;
+
+    /**
+     * TeamController constructor.
+     *
+     * @param TeamRepository $teams
+     */
+    public function __construct(TeamRepository $teams)
     {
-        //
+        $this->teams = $teams;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param UserRepository $users
+     * @return Response
      */
-    public function create()
+    public function index(Request $request, UserRepository $users): Response
     {
-        //
+        return response()->json([
+            'data' => $users->userTeamsWithBoards($request)
+        ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  CreateTeamFormRequest $request
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateTeamFormRequest $request): Response
     {
-        //
+        $team = $this->teams->create([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'private' => $request->input('private')
+        ]);
+
+        $this->teams->addMember($team, auth()->user()->id);
+
+        return response()->json([
+            'data' => $team
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return Response
      */
-    public function show($id)
+    public function show($id): Response
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json([
+            'data' => $this->teams->findByHashId($id)
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  CreateTeamFormRequest $request
+     * @param  int $id
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateTeamFormRequest $request, $id): Response
     {
-        //
+        $team = $this->teams->update($id, [
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'private' => $request->input('private')
+        ]);
+
+        return response()->json([
+            'data' => $team
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
-        //
+        return response()->json([
+            'data' => $this->teams->delete($id)
+        ], 200);
     }
 }

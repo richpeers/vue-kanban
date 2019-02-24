@@ -2,15 +2,15 @@
 
 namespace App\Domain\Teams;
 
-use App\App\Traits\ModelHasHashIds;
 use App\Domain\Boards\Board;
 use App\Domain\Users\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Vinkla\Hashids\Facades\Hashids;
 
 class Team extends Model
 {
-    use SoftDeletes, ModelHasHashIds;
+    use SoftDeletes;
 
     protected $table = 'teams';
 
@@ -20,6 +20,22 @@ class Team extends Model
      * @var array
      */
     protected $fillable = ['title', 'description', 'private'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['hashId'];
+
+    /**
+     * Get Hashed Id
+     * @return mixed
+     */
+    public function getHashIdAttribute()
+    {
+        return Hashids::encode($this->id);
+    }
 
     /**
      * Get the users the team belongs to

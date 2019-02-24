@@ -2,14 +2,14 @@
 
 namespace App\Domain\Boards;
 
-use App\App\Traits\ModelHasHashIds;
 use App\Domain\Columns\Column;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Vinkla\Hashids\Facades\Hashids;
 
 class Board extends Model
 {
-    use SoftDeletes, ModelHasHashIds;
+    use SoftDeletes;
 
     protected $table = 'boards';
 
@@ -18,7 +18,32 @@ class Board extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'owner_type', 'owner_id'];
+    protected $fillable = ['title', 'owner_type', 'owner_id', 'private'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'private' => 'boolean',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['hashId'];
+
+    /**
+     * Get Hashed Id
+     * @return mixed
+     */
+    public function getHashIdAttribute()
+    {
+        return Hashids::encode($this->id);
+    }
 
     /**
      * Get the board owner (user or team)

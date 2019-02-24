@@ -19,6 +19,7 @@ class CreateBoardsTable extends Migration
             $table->string('owner_type');
             $table->unsignedInteger('owner_id');
             $table->index(['owner_id', 'owner_type']);
+            $table->boolean('private')->index();
             $table->timestamps();
             $table->softDeletes();
         });

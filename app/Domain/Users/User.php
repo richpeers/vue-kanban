@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Vinkla\Hashids\Facades\Hashids;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -33,6 +34,22 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['hashId'];
+
+    /**
+     * Get Hashed Id
+     * @return mixed
+     */
+    public function getHashIdAttribute()
+    {
+        return Hashids::encode($this->id);
+    }
 
     /**
      * Get the user's teams

@@ -111,7 +111,7 @@ abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterf
      */
     public function update($id, array $properties)
     {
-        return $this->entity->update($properties);
+        return $this->entity->find($id)->update($properties);
     }
 
     /**

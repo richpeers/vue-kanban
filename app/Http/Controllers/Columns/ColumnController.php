@@ -2,84 +2,91 @@
 
 namespace App\Http\Controllers\Columns;
 
+use App\Domain\Columns\Repositories\ColumnRepository;
+use App\Http\Requests\Columns\CreateColumnFormRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class ColumnController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @var ColumnRepository
      */
-    public function index()
-    {
-        //
-    }
+    protected $columns;
 
     /**
-     * Show the form for creating a new resource.
+     * ColumnController constructor.
      *
-     * @return \Illuminate\Http\Response
+     * @param ColumnRepository $columns
      */
-    public function create()
+    public function __construct(ColumnRepository $columns)
     {
-        //
+        $this->columns = $columns;
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateColumnFormRequest $request
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateColumnFormRequest $request): Response
     {
-        //
+        $column = $this->columns->create([
+            'order' => $request->input('order'),
+            'title' => $request->input('title'),
+            'board_id' => $request->input('board_id')
+        ]);
+
+        return response()->json([
+            'data' => $column
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return Response
      */
-    public function show($id)
+    public function show($id): Response
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json([
+            'data' => $this->columns->find($id)
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  CreateColumnFormRequest $request
+     * @param  int $id
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateColumnFormRequest $request, $id): Response
     {
-        //
+        $team = $this->columns->update($id, [
+            'order' => $request->input('order'),
+            'title' => $request->input('title'),
+            'board_id' => $request->input('board_id')
+        ]);
+
+        return response()->json([
+            'data' => $team
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
-        //
+        return response()->json([
+            'data' => $this->columns->delete($id)
+        ], 200);
     }
 }

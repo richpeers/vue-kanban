@@ -2,84 +2,88 @@
 
 namespace App\Http\Controllers\Comments;
 
-use Illuminate\Http\Request;
+use App\Domain\Comments\Repositories\CommentRepository;
+use App\Http\Requests\Cards\CreateCardFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @var CommentRepository
      */
-    public function index()
-    {
-        //
-    }
+    protected $comments;
 
     /**
-     * Show the form for creating a new resource.
+     * CardController constructor.
      *
-     * @return \Illuminate\Http\Response
+     * @param CommentRepository $comments
      */
-    public function create()
+    public function __construct(CommentRepository $comments)
     {
-        //
+        $this->comments = $comments;
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  CreateCardFormRequest $request
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateCardFormRequest $request): Response
     {
-        //
+        $comment = $this->comments->create([
+            'card_id' => $request->input('card_id'),
+            'body' => $request->input('body'),
+        ]);
+
+        return response()->json([
+            'data' => $comment
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return Response
      */
-    public function show($id)
+    public function show($id): Response
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json([
+            'data' => $this->comments->findByHashId($id)
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  CreateCardFormRequest $request
+     * @param  int $id
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateCardFormRequest $request, $id): Response
     {
-        //
+        $comment = $this->comments->update($id, [
+            'card_id' => $request->input('card_id'),
+            'body' => $request->input('body'),
+        ]);
+
+        return response()->json([
+            'data' => $comment
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
-        //
+        return response()->json([
+            'data' => $this->comments->delete($id)
+        ], 200);
     }
 }

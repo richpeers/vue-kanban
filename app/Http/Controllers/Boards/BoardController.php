@@ -2,84 +2,103 @@
 
 namespace App\Http\Controllers\Boards;
 
+use App\Domain\Boards\Repositories\BoardRepository;
+use App\Http\Requests\Boards\CreateBoardFormRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class BoardController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @var BoardRepository
      */
-    public function index()
+    protected $boards;
+
+    /**
+     * BoardController constructor.
+     * @param BoardRepository $boards
+     */
+    public function __construct(BoardRepository $boards)
     {
-        //
+        $this->boards = $boards;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
-    public function create()
+    public function index(Request $request): Response
     {
-        //
+        return response()->json([
+            'data' => $this->boards->userIndex($request)
+        ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  CreateBoardFormRequest $request
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateBoardFormRequest $request): Response
     {
-        //
+        if ($request->has('team_id')) {
+            $board = $this->boards->createTeamBoard($request);
+
+        } else {
+            $board = $this->boards->createPersonalBoard($request);
+        }
+
+        return response()->json([
+            'data' => $board
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return Response
      */
-    public function show($id)
+    public function show($id): Response
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json([
+            'data' => $this->boards->findByHashId($id)
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  CreateBoardFormRequest $request
+     * @param  int $id
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateBoardFormRequest $request, $id): Response
     {
-        //
+        $board = $this->boards->update($id, [
+            'title' => $request->input('title'),
+            'private' => $request->input('private')
+        ]);
+
+        return response()->json([
+            'data' => $board
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
-        //
+        return response()->json([
+            'data' => $this->boards->delete($id)
+        ], 200);
     }
 }

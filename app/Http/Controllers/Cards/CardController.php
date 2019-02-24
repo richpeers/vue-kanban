@@ -2,84 +2,96 @@
 
 namespace App\Http\Controllers\Cards;
 
+use App\Domain\Cards\Repositories\CardRepository;
+use App\Http\Requests\Cards\CreateCardFormRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class CardController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @var CardRepository
      */
-    public function index()
-    {
-        //
-    }
+    protected $cards;
 
     /**
-     * Show the form for creating a new resource.
+     * CardController constructor.
      *
-     * @return \Illuminate\Http\Response
+     * @param CardRepository $cards
      */
-    public function create()
+    public function __construct(CardRepository $cards)
     {
-        //
+        $this->cards = $cards;
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  CreateCardFormRequest $request
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateCardFormRequest $request): Response
     {
-        //
+        $card = $this->cards->create([
+            'column_id' => $request->input('column_id'),
+            'order' => $request->input('order'),
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'due' => $request->has('due') ? Carbon::createFromFormat('Y-m-d H:i', $request->input('due')) : null
+        ]);
+
+        return response()->json([
+            'data' => $card
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return Response
      */
-    public function show($id)
+    public function show($id): Response
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json([
+            'data' => $this->cards->findByHashId($id)
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Request $request
+     * @param  int $id
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
-        //
+        $card = $this->cards->update($id, [
+            'column_id' => $request->input('column_id'),
+            'order' => $request->input('order'),
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'due' => $request->has('due') ? Carbon::createFromFormat('Y-m-d H:i', $request->input('due')) : null
+        ]);
+
+        return response()->json([
+            'data' => $card
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
-        //
+        return response()->json([
+            'data' => $this->cards->delete($id)
+        ], 200);
     }
 }

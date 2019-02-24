@@ -48,7 +48,7 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
+    import {mapActions, mapGetters} from 'vuex'
     import localforage from 'localforage'
     import {isEmpty} from 'lodash'
 
@@ -60,6 +60,12 @@
                 errors: []
             }
         },
+        computed: {
+            ...mapGetters({
+                user: 'auth/user'
+            })
+        },
+
         methods: {
             ...mapActions({
                 login: 'auth/login'
@@ -73,8 +79,9 @@
                     context: this
                 }).then(() => {
                     localforage.getItem('intended').then((name) => {
+                        console.log(this.user.data);
                         if (isEmpty(name)) {
-                            this.$router.replace({name: 'home'});
+                            this.$router.replace({name: 'dashboard', params: {hashId: this.user.data.hashId}});
                             return
                         }
 

@@ -2,15 +2,15 @@
 
 namespace App\Domain\Cards;
 
-use App\App\Traits\ModelHasHashIds;
 use App\Domain\Boards\Board;
 use App\Domain\Comments\Comment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Vinkla\Hashids\Facades\Hashids;
 
 class Card extends Model
 {
-    use SoftDeletes, ModelHasHashIds;
+    use SoftDeletes;
 
     protected $table = 'cards';
 
@@ -27,6 +27,22 @@ class Card extends Model
      * @var array
      */
     public $dates = ['created_at', 'updated_at', 'due'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['hashId'];
+
+    /**
+     * Get Hashed Id
+     * @return mixed
+     */
+    public function getHashIdAttribute()
+    {
+        return Hashids::encode($this->id);
+    }
 
     /**
      * Get the board the card belongs to
