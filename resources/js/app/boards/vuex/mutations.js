@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 export const setBoards = (state, data) => {
     state.personalBoards = data;
 };
@@ -26,6 +28,11 @@ export const removeColumn = (state, id) => {
 
 export const appendCard = (state, {columnId, data}) => {
     let index = state.board.columns.findIndex(column => column.id === columnId);
+
+    if (!state.board.columns[index].hasOwnProperty('cards')) {
+        Vue.set(state.board.columns[index], 'cards', []);
+    }
+
     state.board.columns[index].cards.push(data);
 };
 
