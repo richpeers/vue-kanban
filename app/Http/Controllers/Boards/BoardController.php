@@ -40,7 +40,7 @@ class BoardController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CreateBoardFormRequest $request
+     * @param CreateBoardFormRequest $request
      * @return JsonResponse
      */
     public function store(CreateBoardFormRequest $request): JsonResponse
@@ -60,7 +60,7 @@ class BoardController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return JsonResponse
      */
     public function show($id): JsonResponse
@@ -73,8 +73,8 @@ class BoardController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  CreateBoardFormRequest $request
-     * @param  int $id
+     * @param CreateBoardFormRequest $request
+     * @param int $id
      * @return JsonResponse
      */
     public function update(CreateBoardFormRequest $request, $id): JsonResponse
@@ -92,7 +92,7 @@ class BoardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return JsonResponse
      */
     public function destroy($id): JsonResponse

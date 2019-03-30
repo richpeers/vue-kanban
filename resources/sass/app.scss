@@ -4,12 +4,14 @@
 @import 'variables';
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+// sass
 @import 'modals';
 @import "utitities";
 @import "boards";
 @import "board";
 @import "columns";
 @import "column";
+@import "card";
 
 body, html, #app, .app, .page {
   height: 100%;
@@ -36,20 +38,21 @@ body, html, #app, .app, .page {
   .banner-progress {
     background-image: url('/img/progress.png');
     height: 750px;
-    background-size: contain; /* <------ */
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
     opacity: 0.6;
   }
+
   .home-register {
     position: absolute;
     top: 80%;
     height: 12em;
     width: 100%;
     text-align: center;
+
     button {
       width: 10em;
     }
   }
-
 }

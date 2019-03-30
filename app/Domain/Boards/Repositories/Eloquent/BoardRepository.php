@@ -61,18 +61,15 @@ class BoardRepository extends RepositoryAbstract implements BoardRepositoryInter
     {
         $id = Hashids::decode($hashId);
 
-
-//        return $this->find(Hashids::decode($hashId));
-
-
         return $this->entity->with([
             'columns' => function ($column) {
                 $column->select('id', 'board_id', 'title', 'order')
                     ->with([
                         'cards' => function ($card) {
-                            $card->select('id', 'column_id', 'title', 'description', 'order');
+                            $card->select('id', 'column_id', 'title', 'description', 'order')
+                                ->orderBy('order');
                         }
-                    ]);
+                    ])->orderBy('order');
             }
         ])->findOrFail($id)->first();
     }

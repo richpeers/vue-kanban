@@ -1,19 +1,19 @@
 <template>
-    <div class="column-wrapper">
+    <div class="column-wrapper create-column-wrapper">
         <div class="column" :class="{'create-column': !showForm}">
 
             <form v-if="showForm" role=form class="create-column-form" @submit.prevent="submit">
 
-                <input class="form-control mb-3" v-model="title" ref="title" placeholder="Enter Column Name">
+                <input class="form-control form-control-sm" v-model="title" ref="title" placeholder="Enter Column Name">
 
-                <button type="submit" class="btn btn-success">Add</button>
-                <button type="button" class="btn btn-danger" @click.prevent="showForm = false">Cancel</button>
+                <button type="submit" class="btn btn-success btn-sm mr-1">Add</button>
+                <button type="button" class="btn btn-danger btn-sm" @click.prevent="showForm = false">Cancel</button>
 
             </form>
 
-            <button v-else class="btn-primary btn-lg btn-block" type="button" @click="edit">
+            <div v-else class="btn btn-primary btn-block" @click="edit">
                 Add Column
-            </button>
+            </div>
         </div>
     </div>
 

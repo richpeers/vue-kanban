@@ -21,9 +21,18 @@ export const appendColumn = (state, data) => {
     state.board.columns.push(data);
 };
 
+export const orderCards = (state, {index, value}) => {
+
+    Vue.set(state.board.columns[index], 'cards', value);
+};
+
 export const removeColumn = (state, id) => {
     let index = state.board.columns.findIndex(column => column.id === id);
     state.board.columns.splice(index, 1)
+};
+
+export const orderColumns = (state, value) => {
+    Vue.set(state.board, 'columns', value);
 };
 
 export const appendCard = (state, {columnId, data}) => {

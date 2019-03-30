@@ -79,7 +79,6 @@
                     context: this
                 }).then(() => {
                     localforage.getItem('intended').then((name) => {
-                        console.log(this.user.data);
                         if (isEmpty(name)) {
                             this.$router.replace({name: 'dashboard', params: {hashId: this.user.data.hashId}});
                             return

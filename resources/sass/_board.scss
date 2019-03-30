@@ -1,10 +1,16 @@
 .board {
   height: 100%;
   background-color: $info;
+  position: relative;
 
-  .fixed-top {
-    top: $nav-link-height + $nav-link-padding-y * 2;
+  .board-nav {
+    position: absolute;
+    width: 100%;
+    height: 3em;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    padding-left: 2em;
   }
-
-  //padding-top: $nav-link-height + $nav-link-padding-y * 2;
 }

@@ -1,50 +1,131 @@
 .column-wrapper {
-  display: inline-block;
-  width: 20em;
+  display: flex;
+  flex-direction: column;
+  width: 18em;
   height: 100%;
-  overflow-y: auto;
-  margin: 0 1em 0 1em;
+  margin: 0 0.25em 0 0.25em;
+  position: relative;
+  transform: translateZ(0) translateY(0);
 
   .column {
-    background-color: $gray-300;
-    padding: 1em;
+    position: relative;
+    height: 100%;
 
     &.create-column {
       padding: 0;
+      cursor: pointer;
     }
 
     .column-title {
-      position: relative;
+      cursor: pointer;
+      height: 3em;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 0 0.5em 0 1em;
+      z-index: 667;
+      background-color: $gray-300;
+      border-radius: 3px 3px 0 0;
 
-      i {
-        position: absolute;
-        right: 0;
-        top: 0;
-        color: $gray-500;
-        &:hover {
-          cursor: pointer;
-          color: $danger;
+      span {
+        flex-grow: 1;
+        align-content: stretch;
+      }
+
+      .column-menu {
+        display: flex;
+        flex-grow: 0;
+
+        i {
+          color: $gray-500;
+
+          &:hover {
+            color: $danger;
+          }
         }
       }
     }
 
-    .can-card {
-      background-color: white;
-      padding: 1em;
-      margin: 1em 0 0 0;
+    .column-scroll-wrapper {
+      height: 100%;
+      padding: 3em 0 0.5em 0;
 
-      &.create-card {
-        padding: 0;
+      .column-scroll {
+        max-height: 100%;
+        overflow-y: auto;
+        background-color: $gray-300;
+        padding: 0 0.5em 0.5em 0.5em;
+        border-radius: 0 0 3px 3px;
+        z-index: 200;
+      }
+    }
+
+    .create-card {
+      margin-bottom: 0;
+
+      .can-card {
+        padding: 0.5em;
+        background-color: white;
+        margin-bottom: 0.5em;
 
         textarea {
-          resize: none
+          outline: none !important;
+          border: none !important;
+          box-shadow: none !important;
+          padding: 0;
+          margin-bottom: 0 !important;
         }
       }
+    }
+  }
 
-      .can-card-title {
-        white-space: normal;
-        text-align: left;
+  &.create-column-wrapper {
+    padding-right: 0.25em;
+
+    .column {
+      padding: 0;
+
+      &.create-column {
+        padding: 0;
+      }
+
+      input.form-control {
+        margin-bottom: 0.5em;
       }
     }
+  }
+}
+
+.create-column-form {
+  background-color: $gray-300 !important;
+  padding: 0.5em;
+  border-radius: 3px;
+}
+
+.column-sortable-ghost {
+  .column {
+    .column-scroll-wrapper .column-scroll, .column-title {
+      background-color: $primary;
+      opacity: 0.5;
+
+      * {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
+.column-sortable-drag {
+  transform: translateZ(0) !important;
+  overflow: visible;
+  height: 100%;
+  top: 0;
+
+  .column {
+    width: 18em;
+    transform: rotate(5deg) !important;
   }
 }

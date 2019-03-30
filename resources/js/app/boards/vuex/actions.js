@@ -37,18 +37,52 @@ export const createColumn = ({commit, state}, {payload, context}) => {
 };
 
 export const deleteColumn = ({commit}, {payload}) => {
-    return axios.delete('/api/columns', {params: {'id': payload.id}}).then(() => {
-        commit('removeColumn', payload.id)
+    return axios.delete('/api/columns/' + payload.id)
+        .then(() => commit('removeColumn', payload.id))
+};
+
+export const orderColumns = ({commit}, {payload}) => {
+
+    let value = payload.value.map(function (column, columnIndex) {
+        column.order = columnIndex + 1;
+        column.cards = payload.value[columnIndex].cards.map(function (card, cardIndex) {
+            card.order = cardIndex + 1;
+            return card
+        });
+        return column;
+    });
+
+    commit('orderColumns', value);
+
+    let columnOrder = payload.value.reduce(function (accum, column) {
+        accum[column.id] = {
+            order: column.order,
+            cards: column.cards.reduce(function (accumCards, card) {
+                accumCards[card.id] = card.order;
+                return accumCards
+            }, {})
+        };
+        return accum;
+    }, {});
+
+    return axios.post('/api/columns/update-order', {
+        boardId: payload.board_id,
+        columnOrder: columnOrder
     })
 };
 
+export const orderCards = ({commit}, {payload}) => {
+
+    commit('orderColumns', payload.value);
+};
+
 export const createCard = ({commit, state}, {payload, context}) => {
-    console.log(payload);
-    return axios.post('/api/cards', payload).then((response) => {
-        commit('appendCard', {columnId: payload.column_id, data: response.data.data})
-    }).catch((error) => {
-        context.errors = error.response.data.errors
-    })
+    return axios.post('/api/cards', payload)
+        .then((response) => {
+            commit('appendCard', {columnId: payload.column_id, data: response.data.data})
+        }).catch((error) => {
+            context.errors = error.response.data.errors
+        })
 };
 
 export const deleteCard = ({commit}, {payload}) => {
@@ -56,65 +90,3 @@ export const deleteCard = ({commit}, {payload}) => {
         commit('removeCard', {columnId: payload.column_id, cardId: payload.id})
     })
 };
-
-
-// export const register = ({dispatch}, {payload, context}) => {
-//     return axios.post('/api/register', payload).then((response) => {
-//         dispatch('setToken', response.data.meta.token).then(() => {
-//             dispatch('fetchUser')
-//         })
-//     }).catch((error) => {
-//         context.errors = error.response.data.errors
-//     })
-// };
-//
-// export const login = ({dispatch}, {payload, context}) => {
-//     return axios.post('/api/login', payload).then((response) => {
-//         dispatch('setToken', response.data.meta.token).then(() => {
-//             dispatch('fetchUser')
-//         })
-//     }).catch((error) => {
-//         context.errors = error.response.data.errors
-//     })
-// };
-//
-// export const fetchUser = ({commit}) => {
-//     return axios.get('/api/me').then((response) => {
-//         commit('setAuthenticated', true)
-//         commit('setUserData', response.data.data)
-//     })
-// };
-//
-// export const logout = ({dispatch}) => {
-//     return axios.post('/api/logout').then((response) => {
-//         dispatch('clearAuth')
-//     })
-// };
-//
-// export const setToken = ({commit, dispatch}, token) => {
-//     if (isEmpty(token)) {
-//         return dispatch('checkTokenExists').then((token) => {
-//             setHttpToken(token)
-//         })
-//     }
-//
-//     commit('setToken', token)
-//     setHttpToken(token)
-// };
-//
-// export const checkTokenExists = ({commit, dispatch}, token) => {
-//     return localforage.getItem('authtoken').then((token) => {
-//         if (isEmpty(token)) {
-//             return Promise.reject('NO_STORAGE_TOKEN');
-//         }
-//
-//         return Promise.resolve(token)
-//     })
-// };
-//
-// export const clearAuth = ({commit}, token) => {
-//     commit('setAuthenticated', false)
-//     commit('setUserData', null)
-//     commit('setToken', null)
-//     setHttpToken(null)
-// };

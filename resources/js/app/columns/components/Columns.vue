@@ -1,10 +1,19 @@
 <template>
     <div class="columns">
-        <column
-                v-for="(column, index) in columns"
-                :key="'column-' + index"
-                :column="column"
-        ></column>
+        <draggable
+                v-model="columns"
+                handle=".column-title"
+                :forceFallback="forceFallback"
+                ghostClass="column-sortable-ghost"
+                dragClass="column-sortable-drag"
+        >
+            <column
+                    v-for="(column, index) in columns"
+                    :key="'columns-' + index"
+                    :index="index"
+                    v-model="columns[index]"
+            ></column>
+        </draggable>
 
         <create-column></create-column>
 
@@ -20,7 +29,7 @@
         name: "Columns",
         components: {CreateColumn, Column},
         props: {
-            columns: {
+            value: {
                 type: Array,
                 default() {
                     return []
@@ -30,9 +39,28 @@
         data: () => ({
             errors: []
         }),
+        computed: {
+            forceFallback() {
+                return !!window.navigator.userAgent.match(/firefox/i);
+            },
+            columns: {
+                get() {
+                    return this.value
+                },
+                set(value) {
+                    let boardId = this.$store.state.boards.board.id;
+
+                    this.orderColumns({
+                        payload: {board_id: boardId, value}
+                    })
+
+                }
+            }
+        },
         methods: {
             ...mapActions({
-                deleteColumn: 'boards/deleteColumn'
+                deleteColumn: 'boards/deleteColumn',
+                orderColumns: 'boards/orderColumns'
             }),
             addColumn() {
                 this.createColumn({

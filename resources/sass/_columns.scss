@@ -1,6 +1,21 @@
 .columns {
+  display: flex;
+  flex-wrap: nowrap; /* [1] */
+  overflow-x: auto; /* [1] */
+  -webkit-overflow-scrolling: touch; /* [4] */
+  -ms-overflow-style: -ms-autohiding-scrollbar; /* [5] */
   height: 100%;
-  padding-top: $nav-link-height + $nav-link-padding-y * 2;
-  overflow-x: auto;
-  white-space: nowrap;
+  padding-top: 3em;
+  margin-right: 0.25em;
+  margin-left: 0.25em;
+  //white-space: nowrap;
+  overflow-y: hidden;
+  * {
+    flex: 0 0 auto;
+  }
+
+  > div {
+    display: flex;
+    height: 100%;
+  }
 }

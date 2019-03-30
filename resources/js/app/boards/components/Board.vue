@@ -1,12 +1,11 @@
 <template>
     <div class="board">
-        <nav class="navbar navbar-expand-sm navbar-light fixed-top">
-            <div class="container-fluid">
-                <span class="navbar-brand text-white">{{board.title}}</span>
-            </div>
-        </nav>
+        <div class="board-nav">
+            <span>{{board.title}}</span>
+        </div>
 
-        <columns :columns="board.columns"></columns>
+
+        <columns :value="board.columns"></columns>
 
     </div>
 

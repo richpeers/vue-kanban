@@ -1,15 +1,19 @@
 <template>
-    <div class="can-card" :class="{'create-card': !showForm}">
+    <div class="create-card" :class="{'create-card': !showForm}">
 
-        <form v-if="showForm" role=form class="create-column-form" @submit.prevent="submit">
-            <textarea class="form-control mb-3" v-model="title" rows="5" ref="title" placeholder="Enter Card Name"></textarea>
-            <button type="submit" class="btn btn-success">Add</button>
-            <button type="button" class="btn btn-danger" @click.prevent="showForm = false">Cancel</button>
+        <form v-if="showForm" role=form class="create-card-form" @submit.prevent="submit">
+
+            <div class="can-card">
+                <textarea class="form-control mb-3" v-model="title" rows="3" ref="title" placeholder="Enter card name .."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-sm mr-1">Add</button>
+            <button type="button" class="btn btn-danger btn-sm" @click.prevent="showForm = false">Cancel</button>
         </form>
 
-        <button v-else class="btn-primary btn-block" type="button" @click="edit">
-            Add Card
-        </button>
+        <a v-else href="#" class="ml-2" @click.prevent="edit">
+            Add a card ..
+        </a>
 
     </div>
 </template>
@@ -37,7 +41,10 @@
             }),
             edit() {
                 this.showForm = true;
-                this.$nextTick(() => this.$refs.title.focus())
+                this.$nextTick(() => {
+                    this.$emit('scroll-down');
+                    this.$refs.title.focus()
+                })
             },
             submit() {
                 this.createCard({

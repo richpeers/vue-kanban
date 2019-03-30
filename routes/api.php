@@ -24,6 +24,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     ]);
 
     // Columns
+    Route::post('/columns/update-order', 'Columns\UpdateColumnOrderController');
     Route::resource('/columns', 'Columns\ColumnController')->only([
         'store', 'show', 'update', 'destroy'
     ]);

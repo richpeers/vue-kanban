@@ -35,6 +35,8 @@ Vue.component('modal', require('./components/Modal.vue').default);
 Vue.component('boards', require('./app/boards/components/Boards.vue').default);
 Vue.component('create-board', require('./app/boards/components/CreateBoard.vue').default);
 
+Vue.component('draggable', require('vuedraggable').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

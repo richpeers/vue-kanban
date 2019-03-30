@@ -1,7 +1,9 @@
 <template>
-    <div class="can-card">
-        <div class="can-card-title">
-            {{card.title}}
+    <div class="can-card-wrapper" @click="editCard">
+        <div class="can-card">
+            <div class="can-card-title">
+                {{value.title}}
+            </div>
         </div>
     </div>
 </template>
@@ -12,13 +14,28 @@
     export default {
         name: "Card",
         props: {
-            card: {
+            value: {
                 type: Object,
                 default() {
                     return {}
                 }
             }
         },
-        data: () => ({})
+        data: () => ({}),
+        computed: {
+            card: {
+                get() {
+                    return this.value
+                },
+                set(value) {
+                    this.$emit('input', value)
+                }
+            }
+        },
+        methods: {
+            editCard() {
+                this.$emit('edit-card')
+            }
+        }
     }
 </script>
