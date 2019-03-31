@@ -5,8 +5,9 @@ namespace App\Domain\Cards;
 use App\Domain\Boards\Board;
 use App\Domain\Comments\Comment;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Vinkla\Hashids\Facades\Hashids;
 
 class Card extends Model
 {
@@ -41,15 +42,15 @@ class Card extends Model
      */
     public function getHashIdAttribute()
     {
-        return Hashids::encode($this->id);
+        return app('hashids')->encode($this->id);
     }
 
     /**
      * Get the board the card belongs to
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function board()
+    public function board(): BelongsTo
     {
         return $this->belongsTo(Board::class);
     }
@@ -57,9 +58,9 @@ class Card extends Model
     /**
      * Get the card comments
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }

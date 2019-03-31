@@ -5,8 +5,9 @@ namespace App\Domain\Teams;
 use App\Domain\Boards\Board;
 use App\Domain\Users\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Vinkla\Hashids\Facades\Hashids;
 
 class Team extends Model
 {
@@ -30,19 +31,20 @@ class Team extends Model
 
     /**
      * Get Hashed Id
-     * @return mixed
+     *
+     * @return string
      */
-    public function getHashIdAttribute()
+    public function getHashIdAttribute(): string
     {
-        return Hashids::encode($this->id);
+        return app('hashids')->encode($this->id);
     }
 
     /**
      * Get the users the team belongs to
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }
@@ -50,9 +52,9 @@ class Team extends Model
     /**
      * Get the boards owned by the team
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
-    public function boards()
+    public function boards(): MorphMany
     {
         return $this->morphMany(Board::class, 'owner');
     }

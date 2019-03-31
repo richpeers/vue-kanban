@@ -4,8 +4,9 @@ namespace App\Domain\Boards;
 
 use App\Domain\Columns\Column;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Vinkla\Hashids\Facades\Hashids;
 
 class Board extends Model
 {
@@ -29,19 +30,20 @@ class Board extends Model
 
     /**
      * Get Hashed Id
-     * @return mixed
+     *
+     * @return string
      */
-    public function getHashIdAttribute()
+    public function getHashIdAttribute(): string
     {
-        return Hashids::encode($this->id);
+        return app('hashids')->encode($this->id);
     }
 
     /**
      * Get the board owner (user or team)
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return MorphTo
      */
-    public function owner()
+    public function owner(): MorphTo
     {
         return $this->morphTo('owner');
     }
@@ -49,9 +51,9 @@ class Board extends Model
     /**
      * Get the board columns
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function columns()
+    public function columns(): HasMany
     {
         return $this->hasMany(Column::class);
     }

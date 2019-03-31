@@ -4,6 +4,7 @@ namespace App\Domain\Comments;
 
 use App\Domain\Cards\Card;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
@@ -19,9 +20,9 @@ class Comment extends Model
     /**
      * Get the card the comment belongs to
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function card()
+    public function card(): BelongsTo
     {
         return $this->belongsTo(Card::class);
     }

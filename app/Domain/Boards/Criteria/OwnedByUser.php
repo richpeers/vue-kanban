@@ -20,7 +20,7 @@ class OwnedByUser
         $this->userId = $userId;
     }
 
-    /**w
+    /**
      * @param $entity
      * @return mixed
      */

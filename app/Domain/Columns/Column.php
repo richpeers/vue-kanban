@@ -5,6 +5,8 @@ namespace App\Domain\Columns;
 use App\Domain\Boards\Board;
 use App\Domain\Cards\Card;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Column extends Model
@@ -23,9 +25,9 @@ class Column extends Model
     /**
      * Get the board the column belongs to
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function board()
+    public function board(): BelongsTo
     {
         return $this->belongsTo(Board::class);
     }
@@ -33,9 +35,9 @@ class Column extends Model
     /**
      * Get the column's cards
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function cards()
+    public function cards(): HasMany
     {
         return $this->hasMany(Card::class);
     }
