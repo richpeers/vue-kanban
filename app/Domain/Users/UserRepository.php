@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Domain\Users\Repositories\Eloquent;
+namespace App\Domain\Users;
 
-use App\App\Repositories\Eloquent\RepositoryAbstract;
-use App\Domain\Users\Repositories\UserRepository as UserRepositoryInterface;
-use App\Domain\Users\User;
+use App\App\Repositories\RepositoryAbstract;
 use Illuminate\Http\Request;
 
-class UserRepository extends RepositoryAbstract implements UserRepositoryInterface
+class UserRepository extends RepositoryAbstract
 {
     /**
      * @return string

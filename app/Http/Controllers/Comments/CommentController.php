@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Comments;
 
-use App\Domain\Comments\Repositories\CommentRepository;
+use App\Domain\Comments\CommentRepository;
 use App\Http\Requests\Cards\CreateCardFormRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use App\Http\Resources\Comment as CommentResource;
 
 class CommentController extends Controller
 {
@@ -25,65 +26,61 @@ class CommentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created comment.
      *
-     * @param  CreateCardFormRequest $request
-     * @return JsonResponse
+     * @param CreateCardFormRequest $request
+     * @return CommentResource
      */
-    public function store(CreateCardFormRequest $request): JsonResponse
+    public function store(CreateCardFormRequest $request): CommentResource
     {
         $comment = $this->comments->create([
             'card_id' => $request->input('card_id'),
             'body' => $request->input('body'),
         ]);
 
-        return response()->json([
-            'data' => $comment
-        ], 200);
+        return new CommentResource($comment);
     }
 
     /**
-     * Display the specified resource.
+     * Get a comment.
      *
-     * @param  int $id
-     * @return JsonResponse
+     * @param int $id
+     * @return CommentResource
      */
-    public function show($id): JsonResponse
+    public function show(int $id): CommentResource
     {
-        return response()->json([
-            'data' => $this->comments->findByHashId($id)
-        ], 200);
+        $comment = $this->comments->findByHashId($id);
+
+        return new CommentResource($comment);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a comment.
      *
-     * @param  CreateCardFormRequest $request
-     * @param  int $id
-     * @return JsonResponse
+     * @param CreateCardFormRequest $request
+     * @param int $id
+     * @return CommentResource
      */
-    public function update(CreateCardFormRequest $request, $id): JsonResponse
+    public function update(CreateCardFormRequest $request, int $id): CommentResource
     {
         $comment = $this->comments->update($id, [
             'card_id' => $request->input('card_id'),
             'body' => $request->input('body'),
         ]);
 
-        return response()->json([
-            'data' => $comment
-        ], 200);
+        return new CommentResource($comment);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Soft delete a comment. (archive it)
      *
-     * @param  int $id
+     * @param int $id
      * @return JsonResponse
      */
-    public function destroy($id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
         return response()->json([
-            'data' => $this->comments->delete($id)
+            'success' => $this->comments->delete($id)
         ], 200);
     }
 }

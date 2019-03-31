@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Domain\Teams\Repositories\Eloquent;
+namespace App\Domain\Teams;
 
-use App\App\Repositories\Eloquent\RepositoryAbstract;
-use App\Domain\Teams\Repositories\TeamRepository as TeamRepositoryInterface;
-use App\Domain\Teams\Team;
+use App\App\Repositories\RepositoryAbstract;
 use Illuminate\Http\Request;
 
-class TeamRepository extends RepositoryAbstract implements TeamRepositoryInterface
+class TeamRepository extends RepositoryAbstract
 {
     /**
      * @return string

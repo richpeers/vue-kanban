@@ -1,10 +1,8 @@
 <?php
 
-namespace App\App\Repositories\Eloquent\Criteria;
+namespace App\App\Repositories\Criteria;
 
-use App\Repositories\CriterionInterface;
-
-class EagerLoad implements CriterionInterface
+class EagerLoad
 {
     /**
      * @var array

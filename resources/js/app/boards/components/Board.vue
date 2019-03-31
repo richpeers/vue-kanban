@@ -1,14 +1,13 @@
 <template>
     <div class="board">
+
         <div class="board-nav">
             <span>{{board.title}}</span>
         </div>
 
-
         <columns :value="board.columns"></columns>
 
     </div>
-
 </template>
 
 <script>

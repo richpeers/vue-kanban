@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Boards;
 
-use App\Domain\Boards\Repositories\BoardRepository;
+use App\Domain\Boards\BoardRepository;
+use App\Domain\Boards\Criteria\OrderedColumnsAndCards;
+use App\Domain\Boards\Criteria\OwnedByUser;
+use App\Domain\Teams\Team;
+use App\Domain\Users\User;
 use App\Http\Requests\Boards\CreateBoardFormRequest;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Board as BoardResource;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class BoardController extends Controller
 {
@@ -17,6 +22,7 @@ class BoardController extends Controller
 
     /**
      * BoardController constructor.
+     *
      * @param BoardRepository $boards
      */
     public function __construct(BoardRepository $boards)
@@ -25,80 +31,79 @@ class BoardController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Get board listing.
      *
-     * @param Request $request
-     * @return JsonResponse
+     * @return AnonymousResourceCollection
      */
-    public function index(Request $request): JsonResponse
+    public function index(): AnonymousResourceCollection
     {
-        return response()->json([
-            'data' => $this->boards->userIndex($request)
-        ], 200);
+        $data = $this->boards->withCriteria([
+            new OwnedByUser(auth()->id())
+        ])->all();
+
+        return BoardResource::collection($data);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created board.
      *
      * @param CreateBoardFormRequest $request
-     * @return JsonResponse
+     * @return BoardResource
      */
-    public function store(CreateBoardFormRequest $request): JsonResponse
+    public function store(CreateBoardFormRequest $request): BoardResource
     {
-        if ($request->has('team_id')) {
-            $board = $this->boards->createTeamBoard($request);
+        $board = $this->boards->create([
+            'title' => $request->input('title'),
+            'owner_type' => $request->has('team_id') ? Team::class : User::class,
+            'owner_id' => $request->has('team_id') ? $request->input('team_id') : $request->user()->id,
+            'private' => $request->input('private')
+        ]);
 
-        } else {
-            $board = $this->boards->createPersonalBoard($request);
-        }
-
-        return response()->json([
-            'data' => $board
-        ], 200);
+        return new BoardResource($board);
     }
 
     /**
-     * Display the specified resource.
+     * Get board with columns and cards.
      *
-     * @param int $id
-     * @return JsonResponse
+     * @param string $id (hashId)
+     * @return BoardResource
      */
-    public function show($id): JsonResponse
+    public function show(string $id): BoardResource
     {
-        return response()->json([
-            'data' => $this->boards->editBoard($id)
-        ], 200);
+        $board = $this->boards->withCriteria([
+            new OrderedColumnsAndCards()
+        ])->findByHashId($id);
+
+        return new BoardResource($board);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the board.
      *
      * @param CreateBoardFormRequest $request
      * @param int $id
-     * @return JsonResponse
+     * @return BoardResource
      */
-    public function update(CreateBoardFormRequest $request, $id): JsonResponse
+    public function update(CreateBoardFormRequest $request, int $id): BoardResource
     {
         $board = $this->boards->update($id, [
             'title' => $request->input('title'),
             'private' => $request->input('private')
         ]);
 
-        return response()->json([
-            'data' => $board
-        ], 200);
+        return new BoardResource($board);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Soft delete the board. (archive it)
      *
      * @param int $id
      * @return JsonResponse
      */
-    public function destroy($id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
         return response()->json([
-            'data' => $this->boards->delete($id)
+            'success' => $this->boards->delete($id)
         ], 200);
     }
 }

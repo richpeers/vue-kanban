@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Cards;
 
-use App\Domain\Cards\Repositories\CardRepository;
+use App\Domain\Cards\CardRepository;
 use App\Http\Requests\Cards\CreateCardFormRequest;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Card as CardResource;
 
 class CardController extends Controller
 {
@@ -27,12 +28,12 @@ class CardController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created card.
      *
-     * @param  CreateCardFormRequest $request
-     * @return JsonResponse
+     * @param CreateCardFormRequest $request
+     * @return CardResource
      */
-    public function store(CreateCardFormRequest $request): JsonResponse
+    public function store(CreateCardFormRequest $request): CardResource
     {
         $card = $this->cards->create([
             'column_id' => $request->input('column_id'),
@@ -42,32 +43,30 @@ class CardController extends Controller
             'due' => $request->has('due') ? Carbon::createFromFormat('Y-m-d H:i', $request->input('due')) : null
         ]);
 
-        return response()->json([
-            'data' => $card
-        ], 200);
+        return new CardResource($card);
     }
 
     /**
-     * Display the specified resource.
+     * Get a card
      *
-     * @param  int $id
-     * @return JsonResponse
+     * @param string $id (hashId)
+     * @return CardResource
      */
-    public function show($id): JsonResponse
+    public function show(string $id): CardResource
     {
-        return response()->json([
-            'data' => $this->cards->findByHashId($id)
-        ], 200);
+        $card = $this->cards->findByHashId($id);
+
+        return new CardResource($card);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a card.
      *
-     * @param  Request $request
-     * @param  int $id
-     * @return JsonResponse
+     * @param Request $request
+     * @param int $id
+     * @return CardResource
      */
-    public function update(Request $request, $id): JsonResponse
+    public function update(Request $request, int $id): CardResource
     {
         $card = $this->cards->update($id, [
             'column_id' => $request->input('column_id'),
@@ -77,21 +76,19 @@ class CardController extends Controller
             'due' => $request->has('due') ? Carbon::createFromFormat('Y-m-d H:i', $request->input('due')) : null
         ]);
 
-        return response()->json([
-            'data' => $card
-        ], 200);
+        return new CardResource($card);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Soft delete a card. (archive it)
      *
-     * @param  int $id
+     * @param int $id
      * @return JsonResponse
      */
-    public function destroy($id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
         return response()->json([
-            'data' => $this->cards->delete($id)
+            'success' => $this->cards->delete($id)
         ], 200);
     }
 }

@@ -18,13 +18,15 @@
 
 <script>
     import Modal from '../../../components/Modal.vue';
-    import {mapActions} from 'vuex'
 
     export default {
         components: {Modal},
         props: {
             show: {
                 type: Boolean
+            },
+            value: {
+                type: Object
             }
         },
         data: () => ({
@@ -35,9 +37,6 @@
             errors: []
         }),
         methods: {
-            // ...mapActions({
-            //     createBoard: 'boards/createBoard'
-            // }),
             close() {
                 this.$emit('close');
             }

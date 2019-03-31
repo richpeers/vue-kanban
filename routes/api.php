@@ -11,7 +11,6 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
 // Auth Protected routes
 Route::group(['middleware' => 'jwt.auth'], function () {
-    Route::get('/posts', 'Posts\PostsController');
 
     // Boards
     Route::resource('/boards', 'Boards\BoardController')->only([
@@ -24,7 +23,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     ]);
 
     // Columns
-    Route::post('/columns/update-order', 'Columns\UpdateColumnOrderController');
+    Route::post('/columns/update-order', 'Columns\UpdateOrderController');
     Route::resource('/columns', 'Columns\ColumnController')->only([
         'store', 'show', 'update', 'destroy'
     ]);

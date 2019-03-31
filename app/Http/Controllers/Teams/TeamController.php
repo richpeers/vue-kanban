@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Teams;
 
-use App\Domain\Teams\Repositories\TeamRepository;
-use App\Domain\Users\Repositories\UserRepository;
+use App\Domain\Teams\TeamRepository;
+use App\Domain\Users\UserRepository;
 use App\Http\Requests\Teams\CreateTeamFormRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
+use App\Http\Resources\Team as TeamResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TeamController extends Controller
 {
@@ -28,26 +29,26 @@ class TeamController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * List teams.
      *
      * @param Request $request
      * @param UserRepository $users
-     * @return JsonResponse
+     * @return AnonymousResourceCollection
      */
-    public function index(Request $request, UserRepository $users): JsonResponse
+    public function index(Request $request, UserRepository $users): AnonymousResourceCollection
     {
-        return response()->json([
-            'data' => $users->userTeamsWithBoards($request)
-        ], 200);
+        $teams = $users->userTeamsWithBoards($request);
+
+        return TeamResource::collection($teams);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created team.
      *
-     * @param  CreateTeamFormRequest $request
-     * @return JsonResponse
+     * @param CreateTeamFormRequest $request
+     * @return TeamResource
      */
-    public function store(CreateTeamFormRequest $request): JsonResponse
+    public function store(CreateTeamFormRequest $request): TeamResource
     {
         $team = $this->teams->create([
             'title' => $request->input('title'),
@@ -57,32 +58,30 @@ class TeamController extends Controller
 
         $this->teams->addMember($team, auth()->user()->id);
 
-        return response()->json([
-            'data' => $team
-        ], 200);
+        return new TeamResource($team);
     }
 
     /**
-     * Display the specified resource.
+     * Get a team.
      *
-     * @param  int $id
-     * @return JsonResponse
+     * @param string $id
+     * @return TeamResource
      */
-    public function show($id): JsonResponse
+    public function show(string $id): TeamResource
     {
-        return response()->json([
-            'data' => $this->teams->findByHashId($id)
-        ], 200);
+        $team = $this->teams->findByHashId($id);
+
+        return new TeamResource($team);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a team.
      *
-     * @param  CreateTeamFormRequest $request
-     * @param  int $id
-     * @return JsonResponse
+     * @param CreateTeamFormRequest $request
+     * @param int $id
+     * @return TeamResource
      */
-    public function update(CreateTeamFormRequest $request, $id): JsonResponse
+    public function update(CreateTeamFormRequest $request, int $id): TeamResource
     {
         $team = $this->teams->update($id, [
             'title' => $request->input('title'),
@@ -90,21 +89,19 @@ class TeamController extends Controller
             'private' => $request->input('private')
         ]);
 
-        return response()->json([
-            'data' => $team
-        ], 200);
+        return new TeamResource($team);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Soft delete a team. (archive it)
      *
-     * @param  int $id
+     * @param int $id
      * @return JsonResponse
      */
-    public function destroy($id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
         return response()->json([
-            'data' => $this->teams->delete($id)
+            'success' => $this->teams->delete($id)
         ], 200);
     }
 }

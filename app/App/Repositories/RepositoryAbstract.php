@@ -1,14 +1,12 @@
 <?php
 
-namespace App\App\Repositories\Eloquent;
+namespace App\App\Repositories;
 
 use App\App\Repositories\Exceptions\NoEntityDefined;
-use App\App\Repositories\RepositoryInterface;
-use App\Repositories\CriteriaInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Vinkla\Hashids\Facades\Hashids;
 
-abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterface
+abstract class RepositoryAbstract
 {
     /**
      * @var mixed
@@ -125,6 +123,7 @@ abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterf
 
     /**
      * @param mixed ...$criteria
+     * @return $this
      */
     public function withCriteria(...$criteria)
     {
@@ -133,6 +132,8 @@ abstract class RepositoryAbstract implements RepositoryInterface, CriteriaInterf
         foreach ($criteria as $criterion) {
             $this->entity = $criterion->apply($this->entity);
         }
+
+        return $this;
     }
 
     /**

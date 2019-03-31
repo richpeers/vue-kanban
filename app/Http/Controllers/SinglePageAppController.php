@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+
 class SinglePageAppController extends Controller
 {
-    public function __invoke()
+    /**
+     * @return View
+     */
+    public function __invoke(): View
     {
         return view('index');
     }

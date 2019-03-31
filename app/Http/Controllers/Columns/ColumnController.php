@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Columns;
 
-use App\Domain\Columns\Repositories\ColumnRepository;
+use App\Domain\Columns\ColumnRepository;
 use App\Http\Requests\Columns\CreateColumnFormRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use App\Http\Resources\Column as ColumnResource;
 
 class ColumnController extends Controller
 {
@@ -25,12 +26,12 @@ class ColumnController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created column.
      *
      * @param CreateColumnFormRequest $request
-     * @return JsonResponse
+     * @return ColumnResource
      */
-    public function store(CreateColumnFormRequest $request): JsonResponse
+    public function store(CreateColumnFormRequest $request): ColumnResource
     {
         $column = $this->columns->create([
             'order' => $request->input('order'),
@@ -38,54 +39,50 @@ class ColumnController extends Controller
             'board_id' => $request->input('board_id')
         ]);
 
-        return response()->json([
-            'data' => $column
-        ], 200);
+        return new ColumnResource($column);
     }
 
     /**
-     * Display the specified resource.
+     * Get a column.
      *
-     * @param  int $id
-     * @return JsonResponse
+     * @param int $id
+     * @return ColumnResource
      */
-    public function show($id): JsonResponse
+    public function show(int $id): ColumnResource
     {
-        return response()->json([
-            'data' => $this->columns->find($id)
-        ], 200);
+        $column = $this->columns->find($id);
+
+        return new ColumnResource($column);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a column.
      *
-     * @param  CreateColumnFormRequest $request
-     * @param  int $id
-     * @return JsonResponse
+     * @param CreateColumnFormRequest $request
+     * @param int $id
+     * @return ColumnResource
      */
-    public function update(CreateColumnFormRequest $request, $id): JsonResponse
+    public function update(CreateColumnFormRequest $request, int $id): ColumnResource
     {
-        $team = $this->columns->update($id, [
+        $column = $this->columns->update($id, [
             'order' => $request->input('order'),
             'title' => $request->input('title'),
             'board_id' => $request->input('board_id')
         ]);
 
-        return response()->json([
-            'data' => $team
-        ], 200);
+        return new ColumnResource($column);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Soft delete a column. (archive it)
      *
-     * @param  int $id
+     * @param int $id
      * @return JsonResponse
      */
-    public function destroy($id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
         return response()->json([
-            'data' => $this->columns->delete($id)
+            'success' => $this->columns->delete($id)
         ], 200);
     }
 }

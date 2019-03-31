@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Domain\Users\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Tymon\JWTAuth\JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\{RegisterFormRequest, LoginFormRequest};
@@ -19,9 +21,9 @@ class AuthController extends Controller
 
     /**
      * @param LoginFormRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function login(LoginFormRequest $request)
+    public function login(LoginFormRequest $request): JsonResponse
     {
         if (!$token = $this->auth->attempt($request->only('email', 'password'))) {
             return response()->json([
@@ -42,9 +44,9 @@ class AuthController extends Controller
     /**
      * @param RegisterFormRequest $request
      * @param User $user
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function register(RegisterFormRequest $request, User $user)
+    public function register(RegisterFormRequest $request, User $user): JsonResponse
     {
         $user = $user->create([
             'name' => $request->input('name'),
@@ -63,9 +65,9 @@ class AuthController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return Response
      */
-    public function logout()
+    public function logout(): Response
     {
         $this->auth->invalidate($this->auth->getToken());
 
@@ -74,9 +76,9 @@ class AuthController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function user(Request $request)
+    public function user(Request $request): JsonResponse
     {
         return response()->json([
             'data' => $request->user(),

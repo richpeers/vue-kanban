@@ -5,7 +5,7 @@
   height: 100%;
   margin: 0 0.25em 0 0.25em;
   position: relative;
-  transform: translateZ(0) translateY(0);
+  transform: translateZ(0);
 
   .column {
     position: relative;
@@ -119,13 +119,16 @@
 }
 
 .column-sortable-drag {
-  transform: translateZ(0) !important;
+  //transform: translateZ(0) !important;
   overflow: visible;
-  height: 100%;
-  top: 0;
+  //height: 100%;
 
   .column {
     width: 18em;
-    transform: rotate(5deg) !important;
+
+
+    transform: rotate(-358deg) !important;
+
+
   }
 }

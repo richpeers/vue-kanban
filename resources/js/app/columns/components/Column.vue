@@ -57,10 +57,6 @@
         },
         data: () => ({
             drag: false,
-            editCardData: {
-                index: null,
-                show: false
-            }
         }),
         computed: {
             cards: {
@@ -91,12 +87,17 @@
                 mapMutations({
                     orderCards: 'boards/orderCards'
                 }),
+            editCard(index) {
+                this.$emit('edit-card', {
+                    columnIndex: this.index,
+                    cardIndex: index
+                })
+            },
             startDrag() {
                 this.drag = true;
                 let element = document.getElementsByTagName('html')[0];
                 element.classList.add('draggable-cursor');
-            }
-            ,
+            },
             endDrag() {
                 this.drag = false;
 
@@ -108,13 +109,11 @@
                         payload: {board_id: this.$store.state.boards.board.id, value: this.$store.state.boards.board.columns}
                     })
                 });
-            }
-            ,
+            },
             scrollDown() {
                 let container = this.$refs.scroll;
                 container.scrollTop = container.scrollHeight;
-            }
-            ,
+            },
             archiveColumn() {
                 this.deleteColumn({
                     payload: {
