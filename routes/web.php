@@ -12,3 +12,5 @@
 */
 
 Route::get('/', 'SinglePageAppController');
+//
+//Route::get('/', 'Card');

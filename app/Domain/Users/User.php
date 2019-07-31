@@ -5,8 +5,9 @@ namespace App\Domain\Users;
 use App\Domain\Boards\Board;
 use App\Domain\Teams\Team;
 use App\Domain\Users\Traits\JwtTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Vinkla\Hashids\Facades\Hashids;
@@ -52,9 +53,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Get the user's teams
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function teams()
     {
@@ -64,7 +63,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Get the boards owned by the user
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function boards()
     {
