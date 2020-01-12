@@ -4,6 +4,7 @@ namespace App\App\Repositories;
 
 use App\App\Repositories\Exceptions\NoEntityDefined;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Arr;
 use Vinkla\Hashids\Facades\Hashids;
 
 abstract class RepositoryAbstract
@@ -127,7 +128,7 @@ abstract class RepositoryAbstract
      */
     public function withCriteria(...$criteria)
     {
-        $criteria = array_flatten($criteria);
+        $criteria = Arr::flatten($criteria);
 
         foreach ($criteria as $criterion) {
             $this->entity = $criterion->apply($this->entity);
