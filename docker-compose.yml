@@ -1,0 +1,78 @@
+version: "3.7"
+services:
+  db:
+    container_name: kanban_db
+    hostname: db_dev
+    image: mysql:8
+    volumes:
+      - kanban-db-volume:/var/lib/mysql
+    ports:
+      - "33060:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=securerootpassword
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    networks:
+      kanban:
+        aliases:
+          - db
+  dbtest:
+    container_name: kanban_db_test
+    hostname: db_dev_test
+    image: mysql:8
+    volumes:
+      - kanban-test-volume:/var/lib/mysql
+    ports:
+      - "33061:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=securerootpassword
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    networks:
+      kanban:
+        aliases:
+          - dbtest
+  server:
+    container_name: kanban_web
+    hostname: server
+    build:
+      context: .
+      args:
+        - "BUILD_ARGUMENT_ENV=local"
+        - "BUILD_ARGUMENT_XDEBUG=false"
+      dockerfile: .docker/apache/Dockerfile
+    expose:
+      - "9003"
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+      - dbtest
+    volumes:
+      - "./:/var/www/html"
+      - "./public:/var/www/html/public"
+      - "./storage/app:/var/www/html/storage/app"
+    env_file: .env
+    networks:
+      kanban:
+        aliases:
+          - server
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      kanban:
+        aliases:
+          - mailhog
+volumes:
+  kanban-db-volume:
+    external: false
+  kanban-test-volume:
+    external: false
+networks:
+  kanban:
+    name: kanban-network
