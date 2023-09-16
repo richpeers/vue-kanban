@@ -31,18 +31,16 @@ body, html, #app, .app, .page {
   text-align: center;
 }
 
+
+
 .banner {
-  padding-top: $nav-link-height;
+  padding-top: 1rem;
   position: relative;
 
   .banner-progress {
-    // background-image: url('/img/progress.png');
-    // // height: 750px;
-    // background-size: contain;
-    // background-repeat: no-repeat;
-    // background-position: center center;
-    // opacity: 0.6;
-    padding: 0 $nav-link-height;
+    max-width: 1080px;
+    padding: 0 1rem;
+    margin: 0 auto;
 
     video {
       width: 100%;
@@ -59,6 +57,17 @@ body, html, #app, .app, .page {
 
     button {
       width: 10em;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+
+  .banner {
+    padding-top: $nav-link-height;
+
+    .banner-progress {
+      padding: 0 $nav-link-height;
     }
   }
 }
