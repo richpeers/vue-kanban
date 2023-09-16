@@ -31,16 +31,16 @@ body, html, #app, .app, .page {
   text-align: center;
 }
 
-
-
 .banner {
-  padding-top: 1rem;
+  padding-top: 0.5rem;
   position: relative;
+  min-height: 100%;
+  background-color: #6cb2eb;
 
   .banner-progress {
-    max-width: 1080px;
+    max-width: 1440px;
     padding: 0 1rem;
-    margin: 0 auto;
+    margin: 0 auto 0 0;
 
     video {
       width: 100%;
@@ -64,10 +64,10 @@ body, html, #app, .app, .page {
 @media (min-width: 768px) {
 
   .banner {
-    padding-top: $nav-link-height;
+    // padding-top: 1.5rem;
 
     .banner-progress {
-      padding: 0 $nav-link-height;
+      padding-left: 1.5rem;
     }
   }
 }
