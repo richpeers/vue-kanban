@@ -1,10 +1,9 @@
 <template>
     <div class="banner">
-        <div class="banner-progress"></div>
-
-        <div v-if="!user.authenticated" class="home-register">
-            <router-link :to="{ name: 'login' }" class="btn btn-lg btn-primary mr-4">Login</router-link>
-            <router-link :to="{ name: 'register' }" class="btn btn-lg btn-primary">Register</router-link>
+        <div class="banner-progress">
+            <video controls muted autoplay loop poster="/img/progress.png">
+                <source src="/img/rec.mp4" type="video/mp4" />
+            </video>
         </div>
     </div>
 
